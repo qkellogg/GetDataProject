@@ -2,7 +2,7 @@
 
 VARIABLE NAME           |CLASS  |DESCRIPTION
 ----------------        |-------|---------------
-Subject                 |Factor |Test subject ID
+Subject                 |Numeric |Test subject ID
 Activity                |Factor	|Activity performed by subject
 tBodyAcc-mean()-X       |Numeric|Mean body acceleration in the X direction
 tBodyAcc-mean()-Y       |Numeric|Mean body acceleration in the Y direction
@@ -72,3 +72,33 @@ fBodyBodyGyroJerkMag-mean()|Numeric|Mean magnitude of jerk from gyroscope (FFT)
 fBodyBodyGyroJerkMag-std()|Numeric|Std dev of magnitude of jerk from gyro (FFT)
 
 *FFT denotes Fast Fourier Transform was applied to these signals*
+
+## Data Processing
+Data were downloaded 19 Aug 2014 from the Coursera course website:
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+
+More information about these data may be found at:
+http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+
+The training and test data were read in and processed using the R script, Run_analysis.R, as follows
+
+        Instrument data (X\_train.txt, X\_test.txt)
+        - Variables were relabeled using features.txt
+        Subject data (subject\_train.txt, subject\_test.txt)
+        Activity data (Y\_train.txt, Y\_test.txt)
+        Activity label ids (activity\_labels.txt)
+Training and test data sets were assembled with the following columns:
+        Subject, Activity, Measured variables 1 through 561 as listed in features.txt
+
+These two data sets were then merged using rbind because there are no common Subjects
+
+The data were then subset to include only those variables that are a mean or standard deviation of some measured variables. This was accomplished by identifying those column names that had "mean\(" or "std\(" in their names, resulting in 66 variables being retained in addition to Subject and Activity.
+
+The activity codes were then changed to labels
+
+The data were then summarized further by taking the mean of each variable for every combination of Subject and Activity, using melt() and dcast() functions, resulting in a data set that is 180 rows (30 subjects X 6 activities), and 68 columns (Subject, Activity, followed the by 66 variables). See the following discussion for more on how tidy data could be represented either wide or long:
+https://class.coursera.org/getdata-006/forum/thread?thread_id=236
+
+The final tidy data set (finaltidy) was then written to a text file, TidyData.txt, using write.table, with the argument row.names=FALSE. 
+
+TidyData.txt should be read back into R using read.table, with the argument header=TRUE.
