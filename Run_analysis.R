@@ -1,9 +1,9 @@
 ## This code takes the training and test data sets from the UCI Maching
-## Learning Repository. The Code Book is 
-install.packages("plyr")
-library(plyr)
-install.packages("reshape2")
-library(reshape2)
+## Learning Repository. Information about original dataset available at
+## http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones#
+## Data should be stored in a folder titled "UCI HAR Dataset" in your workspace
+require("plyr")
+require("reshape2")
 ## Read in column labels
 colNames <- read.table(file="./UCI HAR Dataset/features.txt")
 colNames <- colNames[,2]
